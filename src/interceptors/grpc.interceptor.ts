@@ -9,8 +9,9 @@ export function withInterceptors(handler: any, interceptors: any[] = []) {
     let currentCallback: grpc.sendUnaryData<any> = callback;
 
     const runInterceptor = async (i: number) => {
-      if (i <= index)
+      if (i <= index) {
         throw new Error("next() called multiple times in interceptor chain");
+      }
       index = i;
 
       const interceptor = interceptors[i];

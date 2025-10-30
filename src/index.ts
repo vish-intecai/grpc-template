@@ -65,7 +65,7 @@ export function startGrpcServer() {
     }
 
     server.bindAsync(
-      configuration.url + ":" + configuration.port,
+      `${configuration.url}:${configuration.port}`,
       serverCredentials,
       (err, port) => {
         if (err) {

@@ -14,22 +14,28 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
+    "type:check": "tsc --noEmit",
     "all:fix": "npm run lint:fix && npm run format && npm run type:check",
-    "check:all": "npm run format:check && echo '✅ Format check passed' && npm run lint && echo '✅ Lint passed' && npm run type:check && echo '✅ Type check passed' && echo '🎉 All checks passed!'"
+    "check:all": "npm run format:check && echo '✅ Format check passed' && npm run lint && echo '✅ Lint passed' && npm run type:check && echo '✅ Type check passed' && echo '🎉 All checks passed!'",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.14.0",
     "@grpc/proto-loader": "^0.8.0",
     "cpx": "^1.5.0",
-    "eslint": "^9.38.0",
-    "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.20.6",

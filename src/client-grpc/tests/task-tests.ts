@@ -64,8 +64,14 @@ async function promisifyGrpcMethod<TReq, TRes>(
 
 // Accepts proto-style objects and arrays, returns list of Task
 function extractTasks(res: any): Task[] {
-  if (!res) return [];
-  if (Array.isArray(res)) return res as Task[];
+  if (!res) {
+    console.error("extractTasks: res is undefined");
+    return [];
+  }
+  if (Array.isArray(res)) {
+    console.error("extractTasks: res is an array");
+    return res as Task[];
+  }
   if ("tasks" in res && Array.isArray(res.tasks)) {
     return res.tasks as Task[];
   }
@@ -102,22 +108,26 @@ async function getTasks(getReq: GetTasksRequest): Promise<GetTasksResponse> {
   return getRes;
 }
 
-async function updateTask(updateData: UpdateTasksRequest): Promise<{ message: string }> {
+async function updateTask(
+  updateData: UpdateTasksRequest,
+): Promise<{ message: string }> {
   console.log("\n=== UpdateTasks Test ===");
-  const updateRes = await promisifyGrpcMethod<typeof updateData, { message: string }>(
-    gRPC_task_client.UpdateTasks,
-    updateData,
-  );
+  const updateRes = await promisifyGrpcMethod<
+    typeof updateData,
+    { message: string }
+  >(gRPC_task_client.UpdateTasks, updateData);
   console.log("UpdateTasks Response:", updateRes);
   return updateRes;
 }
 
-async function deleteTask(deleteData: DeleteTasksRequest): Promise<{ message: string }> {
+async function deleteTask(
+  deleteData: DeleteTasksRequest,
+): Promise<{ message: string }> {
   console.log("\n=== DeleteTasks Test ===");
-  const deleteRes = await promisifyGrpcMethod<typeof deleteData, { message: string }>(
-    gRPC_task_client.DeleteTasks,
-    deleteData,
-  );
+  const deleteRes = await promisifyGrpcMethod<
+    typeof deleteData,
+    { message: string }
+  >(gRPC_task_client.DeleteTasks, deleteData);
   console.log("DeleteTasks Response:", deleteRes);
   return deleteRes;
 }
@@ -149,17 +159,16 @@ async function testAddTaskFlow(): Promise<void> {
       );
       // extra diagnostic: print full response object and typeof fields
       console.error("Raw getRes1:", getRes1);
-      if (getRes1 && "tasks" in getRes1)
+      if (getRes1 && "tasks" in getRes1) {
         console.error(
           "Typeof getRes1.tasks:",
           typeof getRes1.tasks,
           Array.isArray(getRes1.tasks),
         );
+      }
     } else {
       console.log("Extracted tasksAfterAdd:", tasksAfterAdd);
     }
-
-   
 
     // Update task
     const updateData: UpdateTasksRequest = {
@@ -179,7 +188,6 @@ async function testAddTaskFlow(): Promise<void> {
     const tasksAfterUpdate = extractTasks(getRes2);
     const updatedTask = findTaskById(tasksAfterUpdate, 1001);
     console.log("Updated task:", updatedTask);
-    
 
     // Delete task
     const deleteData: DeleteTasksRequest = {
