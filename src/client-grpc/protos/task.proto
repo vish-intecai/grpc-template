@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package task;
+
+service TaskService {
+  rpc AddTasks (TaskListRequest) returns (GenericMessageResponse);
+  rpc DeleteTasks (TaskDeleteRequest) returns (GenericMessageResponse);
+  rpc UpdateTasks (TaskListRequest) returns (GenericMessageResponse);
+  rpc GetTasks (PaginatedRequest) returns (PaginatedTaskResponse);
+}
+
+message Task {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  string status = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message TaskInput {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  string status = 4;
+}
+
+message TaskListRequest {
+  repeated TaskInput tasks = 1;
+}
+
+message TaskDeleteRequest {
+  repeated TaskInput tasks = 1;
+}
+
+message GenericMessageResponse {
+  string message = 1;
+}
+
+message PaginatedRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message PaginationInfo {
+  int32 totalTasks = 1;
+  int32 currentPage = 2;
+  int32 totalPages = 3;
+  int32 pageSize = 4;
+}
+
+message PaginatedTaskResponse {
+  repeated Task tasks = 1;
+  PaginationInfo pagination = 2;
+}

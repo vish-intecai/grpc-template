@@ -1,0 +1,39 @@
+{
+  "name": "grpc-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf build",
+    "build": "tsc && tsc-alias && npm run copy:proto",
+    "copy:proto": "cpx \"src/protos/**/*\" build/protos",
+    "postbuild": "echo build completed successfully!",
+    "dev": "tsx watch src/index.ts",
+    "start": "node build/index.js",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "all:fix": "npm run lint:fix && npm run format && npm run type:check",
+    "check:all": "npm run format:check && echo '✅ Format check passed' && npm run lint && echo '✅ Lint passed' && npm run type:check && echo '✅ Type check passed' && echo '🎉 All checks passed!'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.0",
+    "@grpc/proto-loader": "^0.8.0",
+    "cpx": "^1.5.0",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.20.6",
+    "winston": "^3.18.3",
+    "winston-daily-rotate-file": "^5.0.0"
+  }
+}

@@ -1,0 +1,187 @@
+# ======================================================================
+# Core Node.js / TypeScript Production Git Ignore
+# ======================================================================
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+.tmp/
+.temp/
+.cache/
+.nyc_output/
+lib/
+tsbuildinfo.json
+
+# TypeScript
+*.tsbuildinfo
+*.d.ts
+*.map
+
+# Logs
+logs/
+*.log
+*.log.*
+log/
+debug.log
+error.log
+nohup.out
+
+# Environment and Config
+.env
+.env.*
+!env.example
+.envrc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+config/*.local.json
+config/*.secrets.json
+config/secret/
+config/private/
+secrets/
+*.pem
+*.key
+*.crt
+
+# Compiled protos (gRPC)
+src/**/*.js
+src/**/*.js.map
+protos/build/
+generated/
+grpc_out/
+*.pb.js
+*.pb.ts
+*.proto.ts
+
+# RabbitMQ related temp queues or data
+rabbitmq-data/
+rabbitmq-logs/
+mq_logs/
+queue_backups/
+
+# Express / REST / GraphQL service outputs
+uploads/
+public/uploads/
+public/tmp/
+tmp/
+cache/
+sessions/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.vscode-test/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.orig
+
+# Docker and CI/CD
+docker-compose.override.yml
+docker-compose.dev.yml
+docker-compose.local.yml
+.docker/
+.dockerignore
+*.tar
+*.img
+container-data/
+volumes/
+
+# Test artifacts
+jest-coverage/
+coverage/
+test-report.xml
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+
+# PM2 and process managers
+pids/
+*.pid
+*.seed
+pm2.log
+pm2.pid
+pm2/
+logs/pm2-*.log
+
+# VSCode
+.history/
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Security sensitive
+private.key
+private.pem
+id_rsa
+id_dsa
+*.cert
+*.pfx
+*.p12
+*.jks
+
+# Temporary uploads or runtime cache
+tmp/
+temp/
+runtime/
+sessions/
+uploads/tmp/
+upload_cache/
+graphql_uploads/
+cache_data/
+
+# Mac & System
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ======================================================================
+# Monorepo / Microservice setups (optional)
+# ======================================================================
+/services/**/node_modules/
+/services/**/build/
+/services/**/dist/
+/packages/**/node_modules/
+/packages/**/build/
+/packages/**/dist/
+/shared/**/build/
+/shared/**/dist/
+
+# ======================================================================
+# Ignore sensitive deployment files
+# ======================================================================
+*.iml
+*.pid
+*.seed
+*.pid.lock
+*.pid.json
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+aws-credentials.json
+gcp-credentials.json
+service-account.json
+
+# ======================================================================
+# End of File
+# ======================================================================
