@@ -6,6 +6,8 @@ import path from "path";
 import { withInterceptors } from "@/interceptors/grpc.interceptor";
 import { loggingInterceptor } from "@/interceptors/logging.interceptor";
 import fs from "fs";
+import { rabbitmq } from "./helper/rabbitmq";
+import { logger } from "./utils/logger";
 
 export function startGrpcServer() {
   try {
@@ -75,6 +77,14 @@ export function startGrpcServer() {
         console.log(`gRPC Task Service running on port ${port}`);
       },
     );
+    (async () => {
+      try {
+        await rabbitmq.connect();
+        logger.info("RabbitMQ connected successfully");
+      } catch (err: any) {
+        logger.error("RabbitMQ connection failed", err.message);
+      }
+    })();
   } catch (error) {
     console.error("Failed to start gRPC server:", error);
   }
