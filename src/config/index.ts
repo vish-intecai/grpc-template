@@ -1,9 +1,9 @@
 const configuration: any = {
-  url: "localhost",
+  url: 'localhost',
   port: 50051,
-  taskServicegRPCUrl: "localhost",
+  taskServicegRPCUrl: 'localhost',
   taskServicegRPCPort: 50051,
-  nodeEnv: process.env.NODE_ENV || "development",
+  nodeEnv: process.env.NODE_ENV || 'development',
 };
 
 export default configuration;

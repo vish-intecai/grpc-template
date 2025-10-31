@@ -1,15 +1,15 @@
-import configuration from "@/config";
-import { TaskController } from "@/controllers/task.controller";
-import * as grpc from "@grpc/grpc-js";
-import * as protoLoader from "@grpc/proto-loader";
-import path from "path";
-import { withInterceptors } from "@/interceptors/grpc.interceptor";
-import { loggingInterceptor } from "@/interceptors/logging.interceptor";
-import fs from "fs";
+import configuration from '@/config';
+import { TaskController } from '@/controllers/task.controller';
+import * as grpc from '@grpc/grpc-js';
+import * as protoLoader from '@grpc/proto-loader';
+import path from 'path';
+import { withInterceptors } from '@/interceptors/grpc.interceptor';
+import { loggingInterceptor } from '@/interceptors/logging.interceptor';
+import fs from 'fs';
 
 export function startGrpcServer() {
   try {
-    const protoPath = path.resolve(__dirname, "./protos/task.proto");
+    const protoPath = path.resolve(__dirname, './protos/task.proto');
 
     const packageDef = protoLoader.loadSync(protoPath, {
       keepCase: true,
@@ -38,15 +38,15 @@ export function startGrpcServer() {
     });
 
     let serverCredentials: grpc.ServerCredentials;
-    if (configuration.nodeEnv === "production") {
+    if (configuration.nodeEnv === 'production') {
       const rootCert = fs.readFileSync(
-        process.env.GRPC_ROOT_CERT || "./certs/ca.crt",
+        process.env.GRPC_ROOT_CERT || './certs/ca.crt'
       );
       const key = fs.readFileSync(
-        process.env.GRPC_SERVER_KEY || "./certs/server.key",
+        process.env.GRPC_SERVER_KEY || './certs/server.key'
       );
       const cert = fs.readFileSync(
-        process.env.GRPC_SERVER_CERT || "./certs/server.crt",
+        process.env.GRPC_SERVER_CERT || './certs/server.crt'
       );
       serverCredentials = grpc.ServerCredentials.createSsl(
         rootCert,
@@ -56,12 +56,12 @@ export function startGrpcServer() {
             cert_chain: cert,
           },
         ],
-        false,
+        false
       );
-      console.log("gRPC server using secure credentials (TLS)");
+      console.log('gRPC server using secure credentials (TLS)');
     } else {
       serverCredentials = grpc.ServerCredentials.createInsecure();
-      console.log("gRPC server using insecure credentials (development mode)");
+      console.log('gRPC server using insecure credentials (development mode)');
     }
 
     server.bindAsync(
@@ -69,14 +69,14 @@ export function startGrpcServer() {
       serverCredentials,
       (err, port) => {
         if (err) {
-          console.error("Failed to start gRPC server:", err);
+          console.error('Failed to start gRPC server:', err);
           return;
         }
         console.log(`gRPC Task Service running on port ${port}`);
-      },
+      }
     );
   } catch (error) {
-    console.error("Failed to start gRPC server:", error);
+    console.error('Failed to start gRPC server:', error);
   }
 }
 
