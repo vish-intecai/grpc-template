@@ -1,5 +1,5 @@
-import configuration from "@/config";
-import { rabbitmq } from "./index";
+import configuration from '@/config';
+import { rabbitmq } from './index';
 
 export async function publishMessage(routingKey: string, message: any) {
   const channel = await rabbitmq.getChannel();
@@ -12,7 +12,7 @@ export async function publishMessage(routingKey: string, message: any) {
 
 export async function publishToQueue<T>(
   queue: string,
-  message: T,
+  message: T
 ): Promise<void> {
   const ch = await rabbitmq.getChannel();
   await ch.assertQueue(queue, { durable: true });

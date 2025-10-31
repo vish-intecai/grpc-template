@@ -1,11 +1,11 @@
-import tasks from "@/entities/tasks.entity";
+import tasks from '@/entities/tasks.entity';
 
 function generateId() {
   if (tasks.length === 0) {
     return 1;
   }
   const lastTask = tasks[tasks.length - 1];
-  return typeof lastTask.id === "number" ? lastTask.id + 1 : tasks.length + 1;
+  return typeof lastTask.id === 'number' ? lastTask.id + 1 : tasks.length + 1;
 }
 
 export class TaskService {
