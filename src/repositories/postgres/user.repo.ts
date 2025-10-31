@@ -1,5 +1,5 @@
-import { postgresDataSource } from '@/config/database/postgres';
-import { User } from '@/entities';
+import { postgresDataSource } from "@/config/database/postgres";
+import { User } from "@/entities";
 
 export const userRepo = postgresDataSource.getRepository(User);
 
