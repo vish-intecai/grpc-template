@@ -8,6 +8,7 @@ import { loggingInterceptor } from "@/interceptors/logging.interceptor";
 import fs from "fs";
 import { rabbitmq } from "./helper/rabbitmq";
 import { logger } from "./utils/logger";
+import { connectPostgres } from "@/config/database/postgres";
 
 export function startGrpcServer() {
   try {
@@ -77,6 +78,13 @@ export function startGrpcServer() {
         console.log(`gRPC Task Service running on port ${port}`);
       },
     );
+    (async () => {
+      try {
+        await connectPostgres();
+      } catch (err: any) {
+        logger.error("Postgres connection failed", err.message);
+      }
+    })();
     (async () => {
       try {
         await rabbitmq.connect();
