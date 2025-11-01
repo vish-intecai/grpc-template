@@ -18,7 +18,7 @@
     "all:fix": "npm run lint:fix && npm run format && npm run type:check",
     "check:all": "npm run format:check && echo '✅ Format check passed' && npm run lint && echo '✅ Lint passed' && npm run type:check && echo '✅ Type check passed' && echo '🎉 All checks passed!'",
     "prepare": "husky",
-    "test":"node build/client-grpc/task-tests.js"
+    "test": "node build/client-grpc/task-tests.js"
   },
   "keywords": [],
   "author": "",
