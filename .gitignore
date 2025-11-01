@@ -67,7 +67,7 @@ grpc_out/
 *.proto.ts
 
 # RabbitMQ related temp queues or data
-rabbitmq-data/
+rabbitmq-data/i
 rabbitmq-logs/
 mq_logs/
 queue_backups/

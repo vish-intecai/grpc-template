@@ -43,7 +43,7 @@ export class TaskService {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const paginatedTasks = tasks.slice(startIndex, endIndex);
-
+  
     return {
       tasks: paginatedTasks,
       pagination: {

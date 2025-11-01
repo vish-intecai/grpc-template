@@ -6,6 +6,7 @@ import path from "path";
 import { withInterceptors } from "@/interceptors/grpc.interceptor";
 import { loggingInterceptor } from "@/interceptors/logging.interceptor";
 import fs from "fs";
+import { errorInterceptor } from "./interceptors/error.interceptor";
 
 export function startGrpcServer() {
   try {
@@ -25,15 +26,19 @@ export function startGrpcServer() {
     server.addService(taskPackage.TaskService.service, {
       AddTasks: withInterceptors(TaskController.addTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       DeleteTasks: withInterceptors(TaskController.deleteTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       GetTasks: withInterceptors(TaskController.getTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       UpdateTasks: withInterceptors(TaskController.updateTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
     });
 
