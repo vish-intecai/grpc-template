@@ -41,7 +41,7 @@ nohup.out
 # Environment and Config
 .env
 .env.*
-!env.example
+!.env.example
 .envrc
 .env.local
 .env.development.local
