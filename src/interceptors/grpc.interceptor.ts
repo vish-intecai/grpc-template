@@ -1,16 +1,16 @@
-import * as grpc from "@grpc/grpc-js";
+import * as grpc from '@grpc/grpc-js';
 
 export function withInterceptors(handler: any, interceptors: any[] = []) {
   return async (
     call: grpc.ServerUnaryCall<any, any>,
-    callback: grpc.sendUnaryData<any>,
+    callback: grpc.sendUnaryData<any>
   ) => {
     let index = -1;
     let currentCallback: grpc.sendUnaryData<any> = callback;
 
     const runInterceptor = async (i: number) => {
       if (i <= index) {
-        throw new Error("next() called multiple times in interceptor chain");
+        throw new Error('next() called multiple times in interceptor chain');
       }
       index = i;
 
@@ -21,11 +21,11 @@ export function withInterceptors(handler: any, interceptors: any[] = []) {
           call,
           currentCallback,
           (nextCallback?: grpc.sendUnaryData<any>) => {
-            if (typeof nextCallback === "function") {
+            if (typeof nextCallback === 'function') {
               currentCallback = nextCallback;
             }
             return runInterceptor(i + 1);
-          },
+          }
         );
       } else {
         await handler(call, currentCallback);
@@ -35,10 +35,10 @@ export function withInterceptors(handler: any, interceptors: any[] = []) {
     try {
       await runInterceptor(0);
     } catch (error: any) {
-      console.error("Interceptor error:", error);
+      console.error('Interceptor error:', error);
       callback({
         code: grpc.status.INTERNAL,
-        message: error.message || "Internal server error",
+        message: error.message || 'Internal server error',
       });
     }
   };

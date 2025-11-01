@@ -1,11 +1,11 @@
-import { gRPC_task_client } from "../task.client";
+import { gRPC_task_client } from '../task.client';
 
 // Types matching proto definitions (refer src/protos/task.proto)
 type Task = {
   id: number;
   title: string;
   description: string;
-  status: "completed" | "not_yet_started" | "in_progress";
+  status: 'completed' | 'not_yet_started' | 'in_progress';
   created_at: string;
   updated_at: string;
 };
@@ -14,7 +14,7 @@ type TaskInput = {
   id: number;
   title: string;
   description: string;
-  status: "completed" | "not_yet_started" | "in_progress";
+  status: 'completed' | 'not_yet_started' | 'in_progress';
 };
 
 type AddTasksRequest = {
@@ -49,7 +49,7 @@ type GetTasksResponse = {
 // gRPC call helper
 async function promisifyGrpcMethod<TReq, TRes>(
   method: (req: TReq, cb: (err: Error | null, res?: TRes) => void) => void,
-  req: TReq,
+  req: TReq
 ): Promise<TRes> {
   return new Promise<TRes>((resolve, reject) => {
     method.call(gRPC_task_client, req, (err: Error | null, response?: TRes) => {
@@ -65,20 +65,20 @@ async function promisifyGrpcMethod<TReq, TRes>(
 // Accepts proto-style objects and arrays, returns list of Task
 function extractTasks(res: any): Task[] {
   if (!res) {
-    console.error("extractTasks: res is undefined");
+    console.error('extractTasks: res is undefined');
     return [];
   }
   if (Array.isArray(res)) {
-    console.error("extractTasks: res is an array");
+    console.error('extractTasks: res is an array');
     return res as Task[];
   }
-  if ("tasks" in res && Array.isArray(res.tasks)) {
+  if ('tasks' in res && Array.isArray(res.tasks)) {
     return res.tasks as Task[];
   }
-  if ("tasks" in res && typeof res.tasks === "object") {
+  if ('tasks' in res && typeof res.tasks === 'object') {
     // proto-loader may represent repeated fields as objects (if not arrays)
     return Object.values(res.tasks).filter(
-      (v) => v && typeof v === "object",
+      (v) => v && typeof v === 'object'
     ) as Task[];
   }
   return [];
@@ -90,45 +90,45 @@ function findTaskById(tasks: Task[], id: number | string): Task | undefined {
 }
 
 async function addTask(addData: AddTasksRequest): Promise<{ message: string }> {
-  console.log("=== AddTasks Test ===");
+  console.log('=== AddTasks Test ===');
   const addRes = await promisifyGrpcMethod<typeof addData, { message: string }>(
     gRPC_task_client.AddTasks,
-    addData,
+    addData
   );
-  console.log("AddTasks Response:", addRes);
+  console.log('AddTasks Response:', addRes);
   return addRes;
 }
 
 async function getTasks(getReq: GetTasksRequest): Promise<GetTasksResponse> {
   const getRes = await promisifyGrpcMethod<typeof getReq, GetTasksResponse>(
     gRPC_task_client.GetTasks,
-    getReq,
+    getReq
   );
-  console.log("GetTasks Response:", getRes);
+  console.log('GetTasks Response:', getRes);
   return getRes;
 }
 
 async function updateTask(
-  updateData: UpdateTasksRequest,
+  updateData: UpdateTasksRequest
 ): Promise<{ message: string }> {
-  console.log("\n=== UpdateTasks Test ===");
+  console.log('\n=== UpdateTasks Test ===');
   const updateRes = await promisifyGrpcMethod<
     typeof updateData,
     { message: string }
   >(gRPC_task_client.UpdateTasks, updateData);
-  console.log("UpdateTasks Response:", updateRes);
+  console.log('UpdateTasks Response:', updateRes);
   return updateRes;
 }
 
 async function deleteTask(
-  deleteData: DeleteTasksRequest,
+  deleteData: DeleteTasksRequest
 ): Promise<{ message: string }> {
-  console.log("\n=== DeleteTasks Test ===");
+  console.log('\n=== DeleteTasks Test ===');
   const deleteRes = await promisifyGrpcMethod<
     typeof deleteData,
     { message: string }
   >(gRPC_task_client.DeleteTasks, deleteData);
-  console.log("DeleteTasks Response:", deleteRes);
+  console.log('DeleteTasks Response:', deleteRes);
   return deleteRes;
 }
 
@@ -139,9 +139,9 @@ async function testAddTaskFlow(): Promise<void> {
       tasks: [
         {
           id: 1001,
-          title: "Test Task 1",
-          description: "For Add test",
-          status: "not_yet_started",
+          title: 'Test Task 1',
+          description: 'For Add test',
+          status: 'not_yet_started',
         },
       ],
     };
@@ -154,20 +154,20 @@ async function testAddTaskFlow(): Promise<void> {
 
     if (!Array.isArray(tasksAfterAdd) || tasksAfterAdd.length === 0) {
       console.error(
-        "Extracted tasksAfterAdd is empty, but totalTasks in pagination is",
-        getRes1.pagination && getRes1.pagination.totalTasks,
+        'Extracted tasksAfterAdd is empty, but totalTasks in pagination is',
+        getRes1.pagination && getRes1.pagination.totalTasks
       );
       // extra diagnostic: print full response object and typeof fields
-      console.error("Raw getRes1:", getRes1);
-      if (getRes1 && "tasks" in getRes1) {
+      console.error('Raw getRes1:', getRes1);
+      if (getRes1 && 'tasks' in getRes1) {
         console.error(
-          "Typeof getRes1.tasks:",
+          'Typeof getRes1.tasks:',
           typeof getRes1.tasks,
-          Array.isArray(getRes1.tasks),
+          Array.isArray(getRes1.tasks)
         );
       }
     } else {
-      console.log("Extracted tasksAfterAdd:", tasksAfterAdd);
+      console.log('Extracted tasksAfterAdd:', tasksAfterAdd);
     }
 
     // Update task
@@ -175,9 +175,9 @@ async function testAddTaskFlow(): Promise<void> {
       tasks: [
         {
           id: 1001,
-          title: "Test Task 1 - Updated",
-          description: "Updated desc",
-          status: "completed",
+          title: 'Test Task 1 - Updated',
+          description: 'Updated desc',
+          status: 'completed',
         },
       ],
     };
@@ -187,16 +187,16 @@ async function testAddTaskFlow(): Promise<void> {
     const getRes2 = await getTasks(getReq);
     const tasksAfterUpdate = extractTasks(getRes2);
     const updatedTask = findTaskById(tasksAfterUpdate, 1001);
-    console.log("Updated task:", updatedTask);
+    console.log('Updated task:', updatedTask);
 
     // Delete task
     const deleteData: DeleteTasksRequest = {
       tasks: [
         {
           id: 1001,
-          title: "Test Task 1 - Updated",
-          description: "Updated desc",
-          status: "completed",
+          title: 'Test Task 1 - Updated',
+          description: 'Updated desc',
+          status: 'completed',
         },
       ],
     };
@@ -208,15 +208,15 @@ async function testAddTaskFlow(): Promise<void> {
     const deletedTask = findTaskById(tasksAfterDelete, 1001);
 
     if (!deletedTask) {
-      console.log("Task deleted successfully!");
+      console.log('Task deleted successfully!');
     } else {
-      console.error("All tasks after delete:", tasksAfterDelete);
-      throw new Error("Task was not deleted!");
+      console.error('All tasks after delete:', tasksAfterDelete);
+      throw new Error('Task was not deleted!');
     }
 
-    console.log("\nAll gRPC task client tests passed.");
+    console.log('\nAll gRPC task client tests passed.');
   } catch (err) {
-    console.error("Test Error:", err);
+    console.error('Test Error:', err);
   }
 }
 

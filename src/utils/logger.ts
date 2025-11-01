@@ -1,30 +1,30 @@
-import path from "path";
-import fs from "fs";
-import { createLogger, format, transports } from "winston";
-import "winston-daily-rotate-file";
+import path from 'path';
+import fs from 'fs';
+import { createLogger, format, transports } from 'winston';
+import 'winston-daily-rotate-file';
 
-const logsDir = path.resolve(__dirname, "../../logs");
+const logsDir = path.resolve(__dirname, '../../logs');
 
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir);
 }
 
 const transport = new transports.DailyRotateFile({
-  filename: path.join(logsDir, "grpc-%DATE%.log"),
-  datePattern: "YYYY-MM-DD",
+  filename: path.join(logsDir, 'grpc-%DATE%.log'),
+  datePattern: 'YYYY-MM-DD',
   zippedArchive: true,
-  maxSize: "20m",
+  maxSize: '20m',
   maxFiles: "10d",
 });
 
 export const logger = createLogger({
-  level: "info",
+  level: 'info',
   format: format.combine(
-    format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     format.printf(
       ({ timestamp, level, message }) =>
-        `${timestamp} [${level.toUpperCase()}] ${message}`,
-    ),
+        `${timestamp} [${level.toUpperCase()}] ${message}`
+    )
   ),
   transports: [transport, new transports.Console()],
 });

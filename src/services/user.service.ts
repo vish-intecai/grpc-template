@@ -1,4 +1,4 @@
-import { userPostgresRepo } from "@/repositories/postgres/user.repo";
+import { userPostgresRepo } from '@/repositories/postgres/user.repo';
 
 export class UserService {
   static async createUser(name: string, email: string) {

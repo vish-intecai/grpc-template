@@ -1,7 +1,7 @@
-import amqp from "amqplib";
-import type { Channel, Connection } from "amqplib";
-import { ExampleConsumer } from "./consumers";
-import configuration from "@/config";
+import amqp from 'amqplib';
+import type { Channel, Connection } from 'amqplib';
+import { ExampleConsumer } from './consumers';
+import configuration from '@/config';
 
 let connection: Connection | any = null;
 let channel: Channel | any = null;
@@ -10,7 +10,7 @@ let connecting: Promise<void> | any = null;
 export const rabbitmq = {
   async connect(
     retryCount = 5,
-    retryDelay = 3000,
+    retryDelay = 3000
   ): Promise<{ connection: Connection; channel: Channel }> {
     if (connection && channel) {
       return { connection, channel };
@@ -37,7 +37,7 @@ export const rabbitmq = {
     for (let attempt = 1; attempt <= retryCount; attempt++) {
       try {
         console.log(
-          `🐇 Connecting to RabbitMQ (attempt ${attempt}/${retryCount})...`,
+          `🐇 Connecting to RabbitMQ (attempt ${attempt}/${retryCount})...`
         );
 
         const conn = await amqp.connect(configuration.rabbimqUrl);
@@ -46,7 +46,7 @@ export const rabbitmq = {
         await ch.assertExchange(
           configuration.rabbitmqExchangeName,
           configuration.rabbitmqExchangeType,
-          { durable: true },
+          { durable: true }
         );
 
         ExampleConsumer.ExampleProcess(ch);
@@ -55,20 +55,20 @@ export const rabbitmq = {
         connection = conn;
         channel = ch;
 
-        console.log("✅ RabbitMQ connected successfully");
+        console.log('✅ RabbitMQ connected successfully');
         return;
       } catch (err) {
         console.error(
           `❌ RabbitMQ connection failed (attempt ${attempt}):`,
-          (err as Error).message,
+          (err as Error).message
         );
 
         if (attempt === retryCount) {
           console.error(
-            "🚨 Max retries reached. Could not connect to RabbitMQ.",
+            '🚨 Max retries reached. Could not connect to RabbitMQ.'
           );
           throw new Error(
-            `RabbitMQ connection failed: ${(err as Error).message}`,
+            `RabbitMQ connection failed: ${(err as Error).message}`
           );
         }
 
@@ -82,7 +82,7 @@ export const rabbitmq = {
 
   async getChannel(): Promise<Channel> {
     if (!channel) {
-      console.warn("⚠️ Channel not initialized. Trying to reconnect...");
+      console.warn('⚠️ Channel not initialized. Trying to reconnect...');
       await this.connect();
     }
     return channel!;
@@ -100,11 +100,11 @@ export const rabbitmq = {
         await conn.close();
       }
 
-      console.log("🔌 RabbitMQ connection closed gracefully");
+      console.log('🔌 RabbitMQ connection closed gracefully');
     } catch (err) {
       console.error(
-        "⚠️ Error closing RabbitMQ connection:",
-        (err as Error).message,
+        '⚠️ Error closing RabbitMQ connection:',
+        (err as Error).message
       );
     }
   },
