@@ -10,7 +10,7 @@ import { rabbitmq } from './helper/rabbitmq';
 import { logger } from './utils/logger';
 import { connectPostgres } from '@/config/database/postgres';
 import RedisClient from './config/database/redis';
-import { errorInterceptor } from "./interceptors/error.interceptor";
+import { errorInterceptor } from './interceptors/error.interceptor';
 
 export function startGrpcServer() {
   try {
