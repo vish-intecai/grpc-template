@@ -9,6 +9,7 @@ import fs from "fs";
 import { rabbitmq } from "./helper/rabbitmq";
 import { logger } from "./utils/logger";
 import { connectPostgres } from "@/config/database/postgres";
+import { errorInterceptor } from "./interceptors/error.interceptor";
 
 export function startGrpcServer() {
   try {
@@ -28,15 +29,19 @@ export function startGrpcServer() {
     server.addService(taskPackage.TaskService.service, {
       AddTasks: withInterceptors(TaskController.addTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       DeleteTasks: withInterceptors(TaskController.deleteTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       GetTasks: withInterceptors(TaskController.getTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
       UpdateTasks: withInterceptors(TaskController.updateTasks, [
         loggingInterceptor(),
+        errorInterceptor(),
       ]),
     });
 

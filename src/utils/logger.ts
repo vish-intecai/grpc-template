@@ -14,6 +14,7 @@ const transport = new transports.DailyRotateFile({
   datePattern: "YYYY-MM-DD",
   zippedArchive: true,
   maxSize: "20m",
+  maxFiles: "10d",
 });
 
 export const logger = createLogger({
